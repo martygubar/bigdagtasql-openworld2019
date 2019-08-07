@@ -1,0 +1,28 @@
+{
+    "workshop": {
+        "title": "Introduction to Python Development with Autonomous Transaction Processing Hands on Lab",
+        "description": "Learn how to spin up and Autonomous Transaction Processing Database,load and access data, and create a REST service using Python in minutes.",
+        "theme": "default",
+        "interactive":"https://launch.oracle.com/?mono-to-micro",
+        "labs": [
+            {
+                "number": "0",
+                "filename": "Intro.md",
+                "title": "Workshop Introduction",
+                "description": "",
+                "labels": {
+                    "version": "Instructor Led"
+                }
+            },
+            {
+                "number": "050",
+                "filename": "LabGuide050.md",
+                "title": "Lab 050: Setup Cloud Environment",
+                "description": "",
+                "labels": {
+                    "version": "Instructor Led"
+                }
+            }
+        ]
+    }
+}
