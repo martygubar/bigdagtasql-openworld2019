@@ -6,9 +6,9 @@ Welcome to the Big Data SQL Workshop!  Big Data SQL is an enabling technology th
 The workshop is based on information from the NYC Citi Bikes Ridesharing program - [you can see the data here](https://data.cityofnewyork.us/NYC-BigApps/Citi-Bike-System-Data/vsnr-94wk).  A rider picks up a bike from a station anywhere in  the city - takes a trip - and then drops off his/her bike at another station.  The ending station may or may not be the same.  We combine this information with historical ridership, station details and weather data - and then ask questions like:
 
 - What are the overall ridership trends?  (from ***Oracle Database***)
-- How is this affected by weather?  (from Oracle Object Store)
-- How much time do they spend riding?  (from Hive)
-- What is the current bicycle deployment (from Kafka) 
+- How is this affected by weather?  (from ***Oracle Object Store***)
+- How much time do they spend riding?  (from ***Hive***)
+- What is the current bicycle deployment (from ***Kafka***) 
 - How do we ensure that the right bicycle inventory is deployed to various stations? (from all of these sources)
  
 ### Tools you will be using 
@@ -24,7 +24,7 @@ Here are the tasks that you will perform during the workshop.  Each lab builds o
 - __Lab 500:  Secure the data__ - Apply advanced Oracle security policies across all the sources
 
 
-## **Navigate to Lab 050**
+## **Navigate to Lab 100**
 
   - _You can see a list of Lab Guides_ by clicking on the **Menu Icon** in the upper left corner of the browser window.
 
