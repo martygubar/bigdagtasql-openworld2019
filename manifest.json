@@ -23,6 +23,15 @@
                     "version": "Instructor Led"
                 }
             }
+            {
+                "number": "200",
+                "filename": "LabGuide200.md",
+                "title": "Lab 200:  Gather Station Details.  Add station data from HDFS and query JSON  Access Weather data from Oracle Object Store",
+                "description": "",
+                "labels": {
+                    "version": "Instructor Led"
+                }
+            }
         ]
     }
 }
