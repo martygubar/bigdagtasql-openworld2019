@@ -12,12 +12,12 @@ In Lab 100, you will review CitiBike ridership trends over a several month time 
 
 ## Steps
 
-### **STEP 1:** Log into Zeppelin and open Big Data SQL Workshop note
+### **STEP 1:** Log into Zeppelin and open the Big Data SQL Workshop note
 
-From your browser, log into Zeppelin using the following URL:
+* From your browser, log into Zeppelin using the following URL:
   [http://bigdatalite.localdomain:8090/#/](http://bigdatalite.localdomain:8090/#/)
 
- * Click the **Login** button on the top right and log in using `oracle / welcome1`.
+* Click the **Login** button on the top right and log in using `oracle / welcome1`.
 
 * Open note **Big Data SQL Workshop**:
 
@@ -31,11 +31,7 @@ From your browser, log into Zeppelin using the following URL:
   
   The chart shows the daily trends of bike trips in New York City. We'll now add some more context by adding weather data that's available in Oracle Object Store.
 
-- From any browser go to
 
-  [https://cloud.oracle.com/en_US/sign-in](https://cloud.oracle.com/en_US/sign-in)
-
-\
 
 ### **STEP 9:** Download Files Used in this Workshop
 
