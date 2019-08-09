@@ -1,4 +1,5 @@
 # Oracle Big Data SQL
+![](images/Title.png)
 
 Welcome to the Big Data SQL Workshop!  Big Data SQL is an enabling technology that allows your applications to use Oracle Database to easily gain insights across a variety of big data sources.  The goal for the workshop is to give you an understanding of how Big Data SQL works.  Specifically, the focus is on Big Data SQL functional capabilities:  how to access data from different sources (object store, hdfs, hive and Kafka), running queries across these sources and applying security.  
 
@@ -7,7 +8,7 @@ The workshop is based on information from the NYC Citi Bikes Ridesharing program
 
 - What are the overall ridership trends?  (from ***Oracle Database***)
 - How is this affected by weather?  (from ***Oracle Object Store***)
-- How much time do they spend riding?  (from ***Hive***)
+- Find trends in bicycle problems  (from ***Hive***)
 - What is the current bicycle deployment (from ***Kafka***) 
 - How do we ensure that the right bicycle inventory is deployed to various stations? (from all of these sources)
  
