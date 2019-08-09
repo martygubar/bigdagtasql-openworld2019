@@ -5,7 +5,7 @@
 
 In Lab 100, you will review CitiBike ridership trends over a several month time period using a Zeppelin note.  This ridership information is available in Oracle Database 18c.  You will then augment ridership information with weather data sourced from Oracle Object Store - allowing you to see how weather potentially impacts usage.  This weather data is not loaded into Oracle Database; rather, Big Data SQL will allow dynamic access to this new object store source thru Oracle SQL.   
 
-## Lab 050 Objectives
+## Lab 100 Objectives
 
 - Use Zeppelin to report on data captured in Oracle Database 18c
 - Learn how to seamlessly access data in Oracle Object Store from Oracle Database using Big Data SQL-enabled external tables.
