@@ -11,7 +11,7 @@ The workshop is based on information from the NYC Citi Bikes Ridesharing program
 - What is the current bicycle deployment (from ***Kafka***) 
 - How do we ensure that the right bicycle inventory is deployed to various stations? (from all of these sources)
  
-### Tools you will be using 
+#### Tools you will be using 
 We'll answer these questions using a variety of tools:  SQL Developer, Apache Zeppelin and Hue.  You may be new to Zeppelin.  Zeppelin is a notebook that lets you run a variety of technologies (SQL, python, R, spark, etc.) - all within a single "Note".  It makes it easy to jump between different technologies from within a single UI.  You will be running shell scripts, sql scripts, running interactive SQL commands, creating charts.  Zeppelin may not be the best for any one of the tasks (e.g. I would much rather be using SQL Developer for running/debugging SQL) - but it works well for this instructional workshop.
 
 ## Workshop Contents 
