@@ -22,7 +22,7 @@
                 "labels": {
                     "version": "Instructor Led"
                 }
-            }
+            },
             {
                 "number": "200",
                 "filename": "LabGuide200.md",
@@ -31,7 +31,7 @@
                 "labels": {
                     "version": "Instructor Led"
                 }
-            }
+            },
         ]
     }
 }
