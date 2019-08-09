@@ -1,4 +1,4 @@
-# Introduction to Python Development with ATP
+# Oracle Big Data SQL
 
 Welcome to the Big Data SQL Workshop!  The goal for the workshop is to give you an understanding of how Big Data SQL works.  Specifically, the focus is on Big Data SQL functional capabilities:  how to access data from different sources (object store, hdfs, hive and Kafka), running queries and applying security.  
 
