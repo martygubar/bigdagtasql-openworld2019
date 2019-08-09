@@ -1,13 +1,13 @@
 {
     "workshop": {
-        "title": "Introduction to Python Development with Autonomous Transaction Processing Hands on Lab",
-        "description": "Learn how to spin up and Autonomous Transaction Processing Database,load and access data, and create a REST service using Python in minutes.",
+        "title": "Big Data SQL Hands on Lab",
+        "description": "Use Oracle SQL to query data across your data lake.",
         "theme": "default",
         "interactive":"https://launch.oracle.com/?mono-to-micro",
         "labs": [
             {
                 "number": "0",
-                "filename": "Intro.md",
+                "filename": "README.md",
                 "title": "Workshop Introduction",
                 "description": "",
                 "labels": {
@@ -15,9 +15,9 @@
                 }
             },
             {
-                "number": "050",
-                "filename": "LabGuide050.md",
-                "title": "Lab 050: Setup Cloud Environment",
+                "number": "100",
+                "filename": "LabGuide100.md",
+                "title": "Lab 100:  Review Ridership.  Access Weather data from Oracle Object Store",
                 "description": "",
                 "labels": {
                     "version": "Instructor Led"

@@ -2,7 +2,8 @@
 drop table bikes.stations_ext;
 drop table bikes.trips;
 drop table bikes.station_status;
-drop materialized view mv_station_users;
+drop view v_station_status;
+drop materialized view mv_problem_trips;
 drop table bikes.stations;
 drop function bikes.bds_vpd_station;
 drop table weather;
@@ -229,8 +230,7 @@ order by 2 desc;
 desc trips;
 
 -- Performance - lets cache these short bike trips into an MV
-drop materialized view mv_problem_trips;
-create materialized view mv_problem_trips
+CREATE MATERIALIZED VIEW mv_problem_trips
 ENABLE QUERY REWRITE AS (
 select *
 from trips
