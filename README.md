@@ -29,8 +29,8 @@ Here are the tasks that you will perform during the workshop.  Each lab builds o
 
   - _You can see a list of Lab Guides_ by clicking on the **Menu Icon** in the upper left corner of the browser window.
 
-  ![](images/001.png)
+  ![](images/WorkshopMenu.png)
 
-  ![](images/002.png)
+  ![](images/WorkshopContents.png)
 
 You're now ready to continue with [**Lab 100**](LabGuide100.md).
