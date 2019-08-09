@@ -11,7 +11,6 @@ drop table weather;
 
 -- 
 select * from ridership;
-desc ridership;
 
 -- How is ridership impacted by changes in the weather?
 -- Weather data in Object Store
@@ -19,6 +18,7 @@ desc ridership;
 -- https://swiftobjectstorage.uk-london-1.oraclecloud.com/v1/adwc4pm/weather/weather-newark-airport.html
 
 -- view object store data
+
 CREATE TABLE weather
   ( WEATHER_STATION_ID      VARCHAR2(20),
     WEATHER_STATION_NAME    VARCHAR2(100),
@@ -138,8 +138,6 @@ SELECT to_number(s.doc.station_id) as station_id,
 FROM stations_ext s
 WHERE s.doc.name not like '%Don''t%';
 
-select * from bikes.stations;
-
 -- What is available in Hive?  Bring up Hue to review
 
 
@@ -179,6 +177,20 @@ select *
 from trips
 where rownum < 100;
 
+-- What are the most popular starting stations?
+select 
+       start_station_name, 
+       approx_rank (
+                    ORDER BY APPROX_COUNT(*) DESC ) as ranking,
+       approx_count(*) as num_trips
+from trips
+group by start_station_name
+HAVING 
+  APPROX_RANK ( 
+  ORDER BY APPROX_COUNT(*) 
+  DESC ) <= 5
+order by 2;
+
 
 -- Look at bikes and how the are deployed.
 -- How many bikes were moved?  Use SQL Analytic Functions
@@ -204,37 +216,63 @@ where prev_end_station != start_station_name
 group by prev_end_station, start_station_name, start_day
 order by start_day;
 
+-- How often was a bike used for just a few minutes?  Probably means that there was an issue with it
+WITH short_trips as (
+select bike_id,
+       trip_duration
+from trips
+where trip_duration < 120)
+select bike_id, count(*) 
+from short_trips 
+group by bike_id 
+order by 2 desc;
+desc trips;
 
--- Create an MV
-CREATE MATERIALIZED VIEW bikes.mv_station_users 
-ON PREBUILT TABLE 
+-- Performance - lets cache these short bike trips into an MV
+drop materialized view mv_problem_trips;
+create materialized view mv_problem_trips
 ENABLE QUERY REWRITE AS (
-  select start_station_id,
-         start_station_name,
-         end_station_id,
-         end_station_name,
-         gender_name,
-         user_type,
-         count(*) as num_trips
-  from trips t, gender g
-  where t.gender = g.gender
-  group by start_station_id,
-         start_station_name,
-         end_station_id,
-         end_station_name,
-         gender_name,
-         user_type
-  );
-  
--- Rewrite to an MV
-select start_station_name,
-       gender_name,
-       count(*)
-from trips t, gender g
-where t.gender = g.gender
-group by start_station_name, gender_name
-order by 1,2
-    ;
+select *
+from trips
+where trip_duration < 120
+);
+
+-- What are the top 10 problematic bikes - notice automatic query rewrite
+select bike_id,
+       count(*) num_short_trips
+from trips
+where trip_duration < 120
+group by bike_id
+order by 2 desc
+FETCH FIRST 10 ROWS ONLY;
+
+-- For problematic bikes, lets see how they've been used during different types of weather
+-- notice the query will automatically rewrite to the MV
+WITH weather_type as (
+select 
+    report_date,
+    case 
+      when w.temp_avg < 32 then '32 and below'
+      when w.temp_avg between 32 and 50 then '32 to 50'
+      when w.temp_avg between 51 and 75 then '51 to 75'
+      else '75 and higher'
+    end temp_range,            
+    case
+      when w.precipitation = 0 then 'clear skies'
+      else 'rain or snow'
+    end weather
+from weather w
+)
+select bike_id,
+       temp_range,
+       weather,
+       count(*),
+       rank() over (  ORDER BY COUNT(*) DESC ) as ranking
+from weather_type w, trips t
+where to_char(t.start_time, 'fmMM/DD/YY') = report_date
+and t.trip_duration < 120  -- bikes that are a problem
+group by t.bike_id, w.temp_range, w.weather
+order by 5;
 
 --
 -- Kafka - Go to Zeppelin to do the work ...
@@ -245,8 +283,7 @@ CREATE TABLE bikes.station_status
   partitionid number,
   value clob,
   offset integer,
-  timestamp tidisplays
-  mestamp,
+  timestamp timestamp,
   timestamptype integer
 )  
   ORGANIZATION EXTERNAL 
@@ -257,6 +294,183 @@ CREATE TABLE bikes.station_status
         com.oracle.bigdata.tablename = bikes.station_status
       )
     );
+
+
+select * from station_status where rownum < 2;     
+SELECT JSON_DATAGUIDE(value, DBMS_JSON.format_flat, DBMS_JSON.pretty) dg_doc
+FROM   station_status
+WHERE rownum < 2;
+
+SELECT JSON_DATAGUIDE(value, DBMS_JSON.format_hierarchical, DBMS_JSON.pretty) dg_doc
+FROM   station_status
+WHERE  rownum < 2;
+
+set define off;
+
+
+BEGIN  
+  DBMS_JSON.create_view(
+    viewname  => 'v_station_status',
+    tablename => 'station_status',
+    jcolname   => 'value',
+    dataguide  => '{
+  "type" : "object",
+  "properties" :
+  {
+    "ttl" :
+    {
+      "type" : "number",
+      "o:length" : 2,
+      "o:preferred_column_name" : "ttl"
+    },
+    "data" :
+    {
+      "type" : "object",
+      "o:length" : 32767,
+      "o:preferred_column_name" : "data",
+      "properties" :
+      {
+        "stations" :
+        {
+          "type" : "array",
+          "o:length" : 32767,
+          "o:preferred_column_name" : "stations",
+          "items" :
+          {
+            "properties" :
+            {
+              "is_renting" :
+              {
+                "type" : "number",
+                "o:length" : 1,
+                "o:preferred_column_name" : "is_renting"
+              },
+              "station_id" :
+              {
+                "type" : "string",
+                "o:length" : 4,
+                "o:preferred_column_name" : "station_id"
+              },
+              "is_installed" :
+              {
+                "type" : "number",
+                "o:length" : 1,
+                "o:preferred_column_name" : "is_installed"
+              },
+              "is_returning" :
+              {
+                "type" : "number",
+                "o:length" : 1,
+                "o:preferred_column_name" : "is_returning"
+              },
+              "last_reported" :
+              {
+                "type" : "number",
+                "o:length" : 16,
+                "o:preferred_column_name" : "last_reported"
+              },
+              "num_bikes_disabled" :
+              {
+                "type" : "number",
+                "o:length" : 1,
+                "o:preferred_column_name" : "num_bikes_disabled"
+              },
+              "num_docks_disabled" :
+              {
+                "type" : "number",
+                "o:length" : 2,
+                "o:preferred_column_name" : "num_docks_disabled"
+              },
+              "num_bikes_available" :
+              {
+                "type" : "number",
+                "o:length" : 2,
+                "o:preferred_column_name" : "num_bikes_available"
+              },
+              "num_docks_available" :
+              {
+                "type" : "number",
+                "o:length" : 2,
+                "o:preferred_column_name" : "num_docks_available"
+              },
+              "num_ebikes_available" :
+              {
+                "type" : "number",
+                "o:length" : 1,
+                "o:preferred_column_name" : "num_ebikes_available"
+              },
+              "eightd_has_available_keys" :
+              {
+                "type" : "boolean",
+                "o:length" : 8,
+                "o:preferred_column_name" : "eightd_has_available_keys"
+              },
+              "eightd_active_station_services" :
+              {
+                "type" : "array",
+                "o:length" : 64,
+                "o:preferred_column_name" : "eightd_active_station_services",
+                "items" :
+                {
+                  "properties" :
+                  {
+                    "id" :
+                    {
+                      "type" : "string",
+                      "o:length" : 64,
+                      "o:preferred_column_name" : "id"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "last_updated" :
+    {
+      "type" : "number",
+      "o:length" : 16,
+      "o:preferred_column_name" : "last_updated"
+    }
+  }
+}');
+END;
+/
+
+desc v_station_status;
+
+select "station_id",
+       "num_bikes_available",
+       timestamp
+from v_station_status
+where timestamp in (
+    select max(timestamp)
+    from station_status
+    where timestamp < current_timestamp - interval '10' second
+    );
+
+-- Join to station lookup
+WITH latest_status as (
+    select "station_id" as station_id,
+           "num_bikes_available" as num_bikes_available,
+           timestamp
+    from v_station_status
+    where timestamp in (
+        select max(timestamp)
+        from station_status
+        where timestamp < current_timestamp - interval '100' second
+        )
+    )
+select l.station_id,
+       s.station_name,
+       num_bikes_available
+from latest_status l, stations s
+where l.station_id = s.station_id
+and region_id = 70
+;
+
 
 -- Security
 -- Row level security
@@ -319,6 +533,7 @@ BEGIN
 END;
 /
 
+
 select start_station_name, 
        end_station_name, 
        start_time,
@@ -328,11 +543,7 @@ from trips
 where rownum < 100;
 
 ----- dataguide  -------
-create table station_stream as select * from bikes.station_status;
-select * from station_stream;
-desc station_stream;
-04-AUG-19 09.09.11.476226000 PM AMERICA/NEW_YORK
-select current_timestamp from dual;
+
 
 SELECT JSON_DATAGUIDE(value, DBMS_JSON.format_flat, DBMS_JSON.pretty) dg_doc
 FROM   station_stream;
@@ -506,3 +717,20 @@ CREATE TABLE weather
    )
    location ('https://swiftobjectstorage.uk-london-1.oraclecloud.com/v1/adwc4pm/weather/*.csv')
   )  REJECT LIMIT UNLIMITED;
+
+
+declare
+   dataguide clob;
+BEGIN
+  select json_dataguide(value, dbms_json.format_hierarchical,dbms_json.pretty) 
+  into dataguide 
+  from station_stream
+  where rownum < 30;
+
+  DBMS_JSON.create_view(
+    viewname  => 'v_station_status',
+    tablename => 'station_status',
+    jcolname   => 'value',
+    dataguide  => );
+end;
+/

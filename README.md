@@ -1,31 +1,27 @@
 # Introduction to Python Development with ATP
 
-Welcome to the Introduction to Python Development with ATP Workshop. This workshop will introduce you to the most rapid and advanced full-stack development environment available today.
+Welcome to the Big Data SQL Workshop!  The goal for the workshop is to give you an understanding of how Big Data SQL works.  Specifically, the focus is on Big Data SQL functional capabilities:  how to access data from different sources (object store, hdfs, hive and Kafka), running queries and applying security.  
 
-In the next two hours you will experience a day in the life of Derek McCarthy – a full-stack developer for the fictious company Alpha Office. Derek has been hired to introduce new best practices to Alpha Office microservices developers. In this workshop you will take on Derek’s persona to build a series of three cloud-based microservices database applications. In doing so, you will leverage the latest and most advanced Oracle and open-source technologies.
+#### Background ####
+The workshop is based on information from the NYC Citi Bikes Ridesharing program - [you can see the data here](https://data.cityofnewyork.us/NYC-BigApps/Citi-Bike-System-Data/vsnr-94wk).  A rider picks up a bike from a station anywhere in  the city - takes a trip - and then drops off his/her bike at another station.  The ending station may or may not be the same.  We combine this information with weather data - and then ask questions like:
 
-As Derek, you will spin up a new Oracle Cloud Developer Image from the Oracle Marketplace to quickly and easily deploy a complete development environment that is accessible from any location. You will also deploy the Oracle Autonomous Transaction Processing (ATP) Cloud Service providing the full power of the Oracle database while requiring minimal administrative effort and minimal database knowledge and training.  
+- Who is using bikes?  
+- Where are they going?  
+- How much time do they spend riding?  
+- Are bikes optimally distributed across stations? 
+- How do we ensure that the right bicycle inventory is deployed to various stations? 
+ 
+##### Why Zeppelin? #####
+We'll answer these questions using this Zeppelin Note.  Why Zeppelin?  Because it makes it easy to jump between different technologies from within a single UI.  You will be running shell scripts, sql scripts, connect to HDFS and running interactive SQL commands.  Zeppelin may not be the best for any one of the tasks (e.g. I would much rather be using SQL Developer for running/debugging SQL) - but it works well for this instructional workshop
 
-Additionally as Derek, you will work within the Oracle Cloud Developer Image to create Python microservices. You will utilize the best open source technologies to complement the Python language, including the Visual Studio Code IDE, the Flask micro web framework, the Bokeh interactive visualization library and the ReactJS Facebook JavaScript library.  
+#### Workshop Contents ####
+Here are the tasks that you will perform during the workshop:
 
-Finally as Derek, you will create a pair of spatial applications. To do this you will utilize the GeoPandas extensions to Python together with Oracle Spatial functionality within the ATP database.
-
-## **Acquire an Oracle Cloud Trial**
-
-- Bookmark this page for future reference.
-
-- Please click on the following link to create your <a href="https://myservices.us.oraclecloud.com/mycloud/signup?language=en&sourceType=:ex:tb:::RC_NAMK190418P00033:HOLPythonATP&SC=:ex:tb:::RC_NAMK190418P00033:HOLPythonATP&pcode=NAMK190418P00033" target="_trial_">Free Account</a>, and complete all the required steps to get your free Oracle Cloud Trial Account. When you complete the registration process you'll receive a $300 credit that will enable you to complete the lab for free.  Additionally, you'll have 1000s of hours left over to continue to explore the Oracle Cloud.
-
-  - Soon after requesting your trial you will receive the following email. Once you receive this email you can proceed to the next step.
-
-  ![](images/getstartednow.png)
-
-## **Navigate to Lab 050**
-
-  - _You can see a list of Lab Guides_ by clicking on the **Menu Icon** in the upper left corner of the browser window.
-
-  ![](images/001.png)
-
-  ![](images/002.png)
-
-You're now ready to continue with [**Lab 050**](LabGuide050.md).
+- Review Bike Station data that was downloaded from NYC OpenData into HDFS.
+- Access this data using Big Data SQL's ORACLE_HDFS driver + Oracle Database 12c JSON features
+- Perform "mini-ETL" - save the transformed data as an Oracle Database internal table
+- Bike trips data was downloaded from NYC OpenData into Hive as a partitioned table.  Access that data using Big Data SQL's ORACLE_HIVE driver
+- Use Oracle SQL to answer different q's - seamlessly combining data from the different sources
+- Create an MV and use query rewrite to provide superfast performance
+- Create a Kafka stream to see what is happening with the distribution of bikes at this moment!  Combine the stream with data in Oracle Database
+- Secure data - using Oracle Database row-level security and redaction
