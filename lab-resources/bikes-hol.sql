@@ -8,17 +8,22 @@ drop table bikes.stations;
 drop function bikes.bds_vpd_station;
 drop table weather;
 
--- Have Jersey City Data - region_id=73
+set define off;
 
--- 
+--
+-- Lab 100
+--
+-- Review ridership information by day.  This summary information is in Oracle Database
+-- Use Zeppelin to get a better view
+
 select * from ridership;
 
 -- How is ridership impacted by changes in the weather?
--- Weather data in Object Store
--- Object Store
+-- Weather data is in Oracle Object Store in a public bucket
+-- Object Store data:
 -- https://swiftobjectstorage.uk-london-1.oraclecloud.com/v1/adwc4pm/weather/weather-newark-airport.html
 
--- view object store data
+-- Create a table over that data
 
 CREATE TABLE weather
   ( WEATHER_STATION_ID      VARCHAR2(20),
@@ -89,12 +94,15 @@ with rides_by_weather as (
     order by temp_range, weather;
 
 
-
+--
+-- Lab 200 
+-- Station Data in JSON from HDFS
+--
 -- Let's get information about Stations and how bikes are used across them.
 -- We'll want to know which stations are
 -- Look at data stored in HDFS.  Station data feed.
 -- Station data over JSON source.  Details about each station.
--- Hue:  http://bds1.localdomain:8888/hue/filebrowser/view=/user/bikes#/data/bike-stations
+-- Hue:  http://bigdatalite.localdomain:8888/hue/filebrowser/view=/user/bikes#/data/bike-stations
 
 CREATE TABLE bikes.stations_ext (
     doc varchar2(4000)     	   
@@ -106,8 +114,8 @@ CREATE TABLE bikes.stations_ext (
     )
 REJECT LIMIT UNLIMITED;
 
-select count(*) from stations_ext;
--- Query station data. Use Oracle JSON syntax to 
+
+-- Query station data. Use Oracle dot notation JSON syntax to parse the data
 select s.doc,
        s.doc.station_id,
        s.doc.name,
@@ -139,10 +147,14 @@ SELECT to_number(s.doc.station_id) as station_id,
 FROM stations_ext s
 WHERE s.doc.name not like '%Don''t%';
 
--- What is available in Hive?  Bring up Hue to review
+
+--
+-- Lab 300  
+-- Understand trip usage from data in Hive
+--
 
 
--- Create table over the trips data
+-- Create table over the trips data.  This data is from a partitioned hive table.
 CREATE TABLE bikes.trips 
 (
   trip_duration number,
@@ -174,23 +186,22 @@ CREATE TABLE bikes.trips
 
 
 -- Query it.
-select * 
-from trips
-where rownum < 100;
+SELECT * 
+FROM  trips
+WHERE rownum < 100;
 
 -- What are the most popular starting stations?
-select 
+SELECT 
        start_station_name, 
-       approx_rank (
-                    ORDER BY APPROX_COUNT(*) DESC ) as ranking,
-       approx_count(*) as num_trips
-from trips
-group by start_station_name
+       APPROX_RANK (ORDER BY APPROX_COUNT(*) DESC ) AS ranking,
+       APPROX_COUNT(*) as num_trips
+FROM trips
+GROUP BY start_station_name
 HAVING 
   APPROX_RANK ( 
   ORDER BY APPROX_COUNT(*) 
   DESC ) <= 5
-order by 2;
+ORDER BY 2;
 
 
 -- Look at bikes and how the are deployed.
@@ -217,7 +228,7 @@ where prev_end_station != start_station_name
 group by prev_end_station, start_station_name, start_day
 order by start_day;
 
--- How often was a bike used for just a few minutes?  Probably means that there was an issue with it
+-- How often was a bike used for just a couple of minutes?  Probably means that there was an issue with it
 WITH short_trips as (
 select bike_id,
        trip_duration
@@ -227,7 +238,7 @@ select bike_id, count(*)
 from short_trips 
 group by bike_id 
 order by 2 desc;
-desc trips;
+
 
 -- Performance - lets cache these short bike trips into an MV
 CREATE MATERIALIZED VIEW mv_problem_trips
@@ -275,8 +286,17 @@ group by t.bike_id, w.temp_range, w.weather
 order by 5;
 
 --
--- Kafka - Go to Zeppelin to do the work ...
+-- Lab 400  
+-- Current Station Status
 --
+
+
+--
+-- Kafka - Go to Zeppelin create the kafka topic and stream
+--
+
+-- create table over the stream
+
 CREATE TABLE bikes.station_status
 (
   topic varchar2(50),
@@ -295,8 +315,10 @@ CREATE TABLE bikes.station_status
       )
     );
 
+-- Query the stream.  The message is quite large and somewhat complex
+select * from station_status where rownum < 2; 
 
-select * from station_status where rownum < 2;     
+-- Use the JSON_DATAGUIDE to make sense of the JSON
 SELECT JSON_DATAGUIDE(value, DBMS_JSON.format_flat, DBMS_JSON.pretty) dg_doc
 FROM   station_status
 WHERE rownum < 2;
@@ -305,9 +327,7 @@ SELECT JSON_DATAGUIDE(value, DBMS_JSON.format_hierarchical, DBMS_JSON.pretty) dg
 FROM   station_status
 WHERE  rownum < 2;
 
-set define off;
-
-
+-- Use the JSON_DATAGUIDE to automatically create a view over the JSON data
 BEGIN  
   DBMS_JSON.create_view(
     viewname  => 'v_station_status',
@@ -441,6 +461,7 @@ END;
 
 desc v_station_status;
 
+-- Get the latest message from Kafka
 select "station_id",
        "num_bikes_available",
        timestamp
@@ -451,7 +472,7 @@ where timestamp in (
     where timestamp < current_timestamp - interval '10' second
     );
 
--- Join to station lookup
+-- Join to station lookup table.  Take a better look at this in Zeppelin
 WITH latest_status as (
     select "station_id" as station_id,
            "num_bikes_available" as num_bikes_available,
@@ -472,7 +493,10 @@ and region_id = 70
 ;
 
 
+--
+-- Lab 500
 -- Security
+
 -- Row level security
 -- Create a VPD Policy
 -- Only look at the station information that you are in charge of
@@ -541,196 +565,3 @@ select start_station_name,
        birth_year       
 from trips 
 where rownum < 100;
-
------ dataguide  -------
-
-
-SELECT JSON_DATAGUIDE(value, DBMS_JSON.format_flat, DBMS_JSON.pretty) dg_doc
-FROM   station_stream;
-SELECT JSON_DATAGUIDE(value, DBMS_JSON.format_hierarchical, DBMS_JSON.pretty) dg_doc
-FROM   station_stream;
-
-select * from station_stream order by timestamp desc;
-drop view station_stream_view;
-set define off;
-declare
-   dataguide clob;
-BEGIN
-  select json_dataguide(value, dbms_json.format_hierarchical,dbms_json.pretty) 
-  into dataguide 
-  from station_stream
-  where rownum < 30;
-  
-  DBMS_JSON.create_view(
-    viewname  => 'station_stream_view',
-    tablename => 'station_stream',
-    jcolname   => 'value',
-    dataguide  => dataguide);
-END;
-/
-
-select * from station_stream_view where offset != 31;
-
-
-
-select station_status.*
-from station_stream ss,
-     json_table(ss.value, '$.data.stations[*]'
-       COLUMNS (
-        station_id          VARCHAR2(10) PATH'$.station_id',
-        is_renting          NUMBER(1) PATH '$.is_renting',
-        num_bikes_disabled  NUMBER(2) PATH '$.num_bikes_disabled',
-        num_docks_disabled  NUMBER(2) PATH '$.num_docks_disabled',
-        num_bikes_available NUMBER(2) PATH '$.num_bikes_available'     
-       )
-     ) as station_status
-;
-select timestamp, current_timestamp, (current_timestamp - interval '7200' second) as thelag
-from station_status
-where rownum =1;
-
--- JSON Data Guide
-"[
-  {
-    "o:path" : "$.ttl",
-    "type" : "number",
-    "o:length" : 2
-  },
-  {
-    "o:path" : "$.data",
-    "type" : "object",
-    "o:length" : 32767
-  },
-  {
-    "o:path" : "$.data.stations",
-    "type" : "array",
-    "o:length" : 32767
-  },
-  {
-    "o:path" : "$.data.stations.is_renting",
-    "type" : "number",
-    "o:length" : 1
-  },
-  {
-    "o:path" : "$.data.stations.station_id",
-    "type" : "string",
-    "o:length" : 4
-  },
-  {
-    "o:path" : "$.data.stations.is_installed",
-    "type" : "number",
-    "o:length" : 1
-  },
-  {
-    "o:path" : "$.data.stations.is_returning",
-    "type" : "number",
-    "o:length" : 1
-  },
-  {
-    "o:path" : "$.data.stations.last_reported",
-    "type" : "number",
-    "o:length" : 16
-  },
-  {
-    "o:path" : "$.data.stations.num_bikes_disabled",
-    "type" : "number",
-    "o:length" : 2
-  },
-  {
-    "o:path" : "$.data.stations.num_docks_disabled",
-    "type" : "number",
-    "o:length" : 2
-  },
-  {
-    "o:path" : "$.data.stations.num_bikes_available",
-    "type" : "number",
-    "o:length" : 2
-  },
-  {
-    "o:path" : "$.data.stations.num_docks_available",
-    "type" : "number",
-    "o:length" : 2
-  },
-  {
-    "o:path" : "$.data.stations.num_ebikes_available",
-    "type" : "number",
-    "o:length" : 1
-  },
-  {
-    "o:path" : "$.data.stations.eightd_has_available_keys",
-    "type" : "boolean",
-    "o:length" : 8
-  },
-  {
-    "o:path" : "$.data.stations.eightd_active_station_services",
-    "type" : "array",
-    "o:length" : 64
-  },
-  {
-    "o:path" : "$.data.stations.eightd_active_station_services.id",
-    "type" : "string",
-    "o:length" : 64
-  },
-  {
-    "o:path" : "$.last_updated",
-    "type" : "number",
-    "o:length" : 16
-  }
-]"
-
-;
--- Object Store
-CREATE TABLE weather
-  (WEATHER_STATION_ID        VARCHAR2(20),
-   WEATHER_STATION_NAME     VARCHAR2(50),
-   REPORTED_DATE            DATE,
-    AVG_WIND    NUMBER(3,2),
-    PRECIPITATION     NUMBER(3,2),
-    SNOWFALL    NUMBER(3,2),
-    SNOW_DEPTH    NUMBER(3,2),
-    TEMP_AVG    NUMBER(3,2),
-    TEMP_MAX    NUMBER(3,2),
-    TEMP_MIN    NUMBER(3,2),
-    WDF2    NUMBER(3,2),
-    WDF5    NUMBER(3,2),
-    WESD    NUMBER(3,2),
-    WESF    NUMBER(3,2),
-    WSF2    NUMBER(3,2),
-    WSF5    NUMBER(3,2),
-    FOG    NUMBER(3,2),
-    HEAVY_FOG    NUMBER(1),
-    THUNDER    NUMBER(1),
-    SLEET    NUMBER(1),
-    HAIL    NUMBER(1),
-    GLAZE    NUMBER(1),
-    HAZE    NUMBER(1),
-    DRIFTING_SNOW    NUMBER(1),
-    HIGH_WINDS  NUMBER(1)
-  )
-  ORGANIZATION EXTERNAL
-  (TYPE ORACLE_BIGDATA
-   DEFAULT DIRECTORY DEFAULT_DIR
-   ACCESS PARAMETERS
-   (
-     com.oracle.bigdata.debug=TRUE
-     com.oracle.bigdata.fileformat=textfile
-   )
-   location ('https://swiftobjectstorage.uk-london-1.oraclecloud.com/v1/adwc4pm/weather/*.csv')
-  )  REJECT LIMIT UNLIMITED;
-
-
-declare
-   dataguide clob;
-BEGIN
-  select json_dataguide(value, dbms_json.format_hierarchical,dbms_json.pretty) 
-  into dataguide 
-  from station_stream
-  where rownum < 30;
-
-  DBMS_JSON.create_view(
-    viewname  => 'v_station_status',
-    tablename => 'station_status',
-    jcolname   => 'value',
-    dataguide  => );
-end;
-/
