@@ -32,7 +32,7 @@ In Lab 200, you will create an Oracle table that refers to a file stored in hdfs
 
 ### **STEP 2:** Create an oracle table called `bikes.station_ext`
 Make the JSON data available for queries in Oracle Database by creating a Big Data SQL external table
-* Run the following statement from sql developper 
+* Run the following statement from SQL Developer 
 
     Notice the `TYPE ORACLE_HDFS` statement indicating that the file is on the HDFS filesystem, and `LOCATION` indicating the directory where the file resides
 
