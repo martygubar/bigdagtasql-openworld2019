@@ -25,20 +25,34 @@ In Lab 200, you will create an oracle table out of a file stored in hdfs. This f
 
 ![](images/200/002.png)
 
-Notice that the file format is JSON
+* Notice that the file format is JSON
 
 ![](images/200/003.png)
 
 
 ### **STEP 2:** Create an oracle table called "bikes.station_ext" 
 
-run the following statement from sql developper
+* run the following statement from sql developper 
 
-notice the "TYPE ORACLE_HDFS" statement 
+notice the "TYPE ORACLE_HDFS" statement indicating that the file is on the HDFS filesystem, and LOCATION indicating the directory where the file resides
 
+![](images/200/004.png)
 
-### **STEP 3:** Create an oracle table called "bikes.station" using JSON dot notation 
+### **STEP 3:** Show the JSON parsing capabilities of the oracle database using the JSON dot notation
 
+* run the following statement from sql developper
+
+![](images/200/005.png)
+
+scroll right on the query result tab, and notice how one can access JSON nested fields with the "." notation, and access to arrays with the "[]" notation
+
+![](images/200/006.png)
+
+### **STEP 4:** Create an oracle table called "bikes.station" using JSON dot notation 
+
+* run the following statement from sql developper
+
+![](images/200/007.png)
 
 **This completes the Lab!**
 
