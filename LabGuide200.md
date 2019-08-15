@@ -1,6 +1,7 @@
 # Lab 050: Setup Cloud Environment
 
-  ![](images/050/Title.png)
+  ![](images/100/Title.png)
+  
 
 ## Introduction
 
