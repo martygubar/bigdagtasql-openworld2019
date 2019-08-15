@@ -61,7 +61,7 @@ CREATE TABLE weather
     com.oracle.bigdata.csv.skip.header=1
     com.oracle.bigdata.csv.rowformat.fields.terminator = '|'
    )
-   location ('https://swiftobjectstorage.uk-london-1.oraclecloud.com/v1/adwc4pm/weather/*.csv')
+   location ('https://swiftobjectstorage.us-phoenix-1.oraclecloud.com/v1/adwc4pm/weather/*.csv')
   )  REJECT LIMIT UNLIMITED;
   
 select * from weather;
@@ -146,6 +146,8 @@ SELECT to_number(s.doc.station_id) as station_id,
        s.doc.rental_methods
 FROM stations_ext s
 WHERE s.doc.name not like '%Don''t%';
+
+select * from stations;
 
 
 --
@@ -531,7 +533,8 @@ END;
 select start_station_name, 
        end_station_name, 
        start_time,
-       stop_time       
+       stop_time,
+       bike_id
 from trips 
 where rownum < 100;
 
