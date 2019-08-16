@@ -40,64 +40,65 @@ Weather data is captured in a public bucket in Oracle Object Store.  You can vie
     * `LOCATION` identifies the URI for the file(s) in the object store
 
 ```sql
-        CREATE TABLE weather
-        ( WEATHER_STATION_ID      VARCHAR2(20),
-            WEATHER_STATION_NAME    VARCHAR2(100),
-            REPORT_DATE             VARCHAR2(20),
-            AVG_WIND                NUMBER,
-            PRECIPITATION           NUMBER,
-            SNOWFALL                NUMBER,
-            SNOW_DEPTH              NUMBER,
-            TEMP_AVG                NUMBER,
-            TEMP_MAX                NUMBER
-            ....
-            )
-        ORGANIZATION EXTERNAL
-        (TYPE ORACLE_BIGDATA
-        DEFAULT DIRECTORY DEFAULT_DIR
-        ACCESS PARAMETERS
-        (
-            com.oracle.bigdata.fileformat = textfile 
-            com.oracle.bigdata.csv.skip.header=1
-            com.oracle.bigdata.csv.rowformat.fields.terminator = '|'
-        )
-        location ('https://swiftobjectstorage.us-phoenix-1.oraclecloud.com/v1/adwc4pm/weather/*.csv')
-        )  
-        REJECT LIMIT UNLIMITED;
+CREATE TABLE weather
+( WEATHER_STATION_ID      VARCHAR2(20),
+    WEATHER_STATION_NAME    VARCHAR2(100),
+    REPORT_DATE             VARCHAR2(20),
+    AVG_WIND                NUMBER,
+    PRECIPITATION           NUMBER,
+    SNOWFALL                NUMBER,
+    SNOW_DEPTH              NUMBER,
+    TEMP_AVG                NUMBER,
+    TEMP_MAX                NUMBER
+    ....
+    )
+ORGANIZATION EXTERNAL
+(TYPE ORACLE_BIGDATA
+DEFAULT DIRECTORY DEFAULT_DIR
+ACCESS PARAMETERS
+(
+    com.oracle.bigdata.fileformat = textfile 
+    com.oracle.bigdata.csv.skip.header=1
+    com.oracle.bigdata.csv.rowformat.fields.terminator = '|'
+)
+location ('https://swiftobjectstorage.us-phoenix-1.oraclecloud.com/v1/adwc4pm/weather/*.csv')
+)  
+REJECT LIMIT UNLIMITED;
 ```
 * To execute SQL in SQL Developer, place your cursor anywhere inside the `CREATE TABLE` statement.  Click the **Run Statement** button or hit **F9** to create the table.
     ![run command](images/100/run-cmd.png)
+    
 * Review the weather data with the following query:
 ```sql
-    select * from weather;
+select * from weather;
 ```
 * How are bikes used in different kinds of weather?  Combine ridership data stored in Oracle Database with the weather data in object store.  Notice that the weather table is treated like any other table in a query.  Applications do not need to be concertned about the data location:
 ```sql
-    with rides_by_weather as (
-        select case 
-            when w.temp_avg < 32 then '32 and below'
-            when w.temp_avg between 32 and 50 then '32 to 50'
-            when w.temp_avg between 51 and 75 then '51 to 75'
-            else '75 and higher'
-            end temp_range,            
-            case
-            when w.precipitation = 0 then 'clear skies'
-            else 'rain or snow'
-            end weather,
-            r.num_trips num_trips, 
-            r.passes_24hr_sold,
-            r.passes_3day_sold 
-        from ridership r , weather w
-        where r.day = w.report_date
-        )
-        select temp_range,
-            weather,
-            round(avg(num_trips)) num_trips,
-            round(avg(passes_24hr_sold)) passes_24hr,
-            round(avg(passes_3day_sold)) passes_3day
-        from rides_by_weather
-        group by temp_range, weather
-        order by temp_range, weather;
+with rides_by_weather as (
+select case 
+    when w.temp_avg < 32 then '32 and below'
+    when w.temp_avg between 32 and 50 then '32 to 50'
+    when w.temp_avg between 51 and 75 then '51 to 75'
+    else '75 and higher'
+    end temp_range,            
+    case
+    when w.precipitation = 0 then 'clear skies'
+    else 'rain or snow'
+    end weather,
+    r.num_trips num_trips, 
+    r.passes_24hr_sold,
+    r.passes_3day_sold 
+from ridership r , weather w
+where r.day = w.report_date
+)
+select temp_range,
+    weather,
+    round(avg(num_trips)) num_trips,
+    round(avg(passes_24hr_sold)) passes_24hr,
+    round(avg(passes_3day_sold)) passes_3day
+from rides_by_weather
+group by temp_range, weather
+order by temp_range, weather;
 ```
 ## Summary
 You just created an Oracle Big Data SQL table over data sotred in Oracle Object Store and queried it as you would any other Oracle table.  This allows you to easily blend data across data sources to gain new insights.
