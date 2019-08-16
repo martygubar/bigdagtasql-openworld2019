@@ -34,40 +34,41 @@ In Lab 100, you will review CitiBike ridership trends over a several month time 
 
 ### **STEP 3:** Create `weather` Table in SQL Developer
 Weather data is captured in a public bucket in Oracle Object Store.  You can view the contents of the weather here:  [https://swiftobjectstorage.us-phoenix-1.oraclecloud.com/v1/adwc4pm/weather/weather-newark-airport.csv](https://swiftobjectstorage.us-phoenix-1.oraclecloud.com/v1/adwc4pm/weather/weather-newark-airport.html).  Create a Big Data SQL table over this file using the `ORACLE_BIGDATA` driver.
-* In the SQL Developer worksheet, scroll to the `CREATE TABLE weather` statement.  A snippet of the statement is listed below:
+* In the SQL Developer worksheet, scroll to the `CREATE TABLE weather` statement.  A snippet of the statement is listed below.  
+    * `ORACLE_BIGDATA` signifies that the data is sourced from the object store.  
+    * `com.oracle.bigdata.*` fields define the attributes for the file
+    * `LOCATION` identifies the URI for the file(s) in the object store
 
-    ```
-    CREATE TABLE weather
-    ( WEATHER_STATION_ID      VARCHAR2(20),
-        WEATHER_STATION_NAME    VARCHAR2(100),
-        REPORT_DATE             VARCHAR2(20),
-        AVG_WIND                NUMBER,
-        PRECIPITATION           NUMBER,
-        SNOWFALL                NUMBER,
-        SNOW_DEPTH              NUMBER,
-        TEMP_AVG                NUMBER,
-        TEMP_MAX                NUMBER
-        ....
+        ```sql
+        CREATE TABLE weather
+        ( WEATHER_STATION_ID      VARCHAR2(20),
+            WEATHER_STATION_NAME    VARCHAR2(100),
+            REPORT_DATE             VARCHAR2(20),
+            AVG_WIND                NUMBER,
+            PRECIPITATION           NUMBER,
+            SNOWFALL                NUMBER,
+            SNOW_DEPTH              NUMBER,
+            TEMP_AVG                NUMBER,
+            TEMP_MAX                NUMBER
+            ....
+            )
+        ORGANIZATION EXTERNAL
+        (TYPE ORACLE_BIGDATA
+        DEFAULT DIRECTORY DEFAULT_DIR
+        ACCESS PARAMETERS
+        (
+            com.oracle.bigdata.fileformat = textfile 
+            com.oracle.bigdata.csv.skip.header=1
+            com.oracle.bigdata.csv.rowformat.fields.terminator = '|'
         )
-    ORGANIZATION EXTERNAL
-    (TYPE ORACLE_BIGDATA
-    DEFAULT DIRECTORY DEFAULT_DIR
-    ACCESS PARAMETERS
-    (
-        com.oracle.bigdata.fileformat = textfile 
-        com.oracle.bigdata.csv.skip.header=1
-        com.oracle.bigdata.csv.rowformat.fields.terminator = '|'
-    )
-    location ('https://swiftobjectstorage.us-phoenix-1.oraclecloud.com/v1/adwc4pm/weather/*.csv')
-    )  
-    REJECT LIMIT UNLIMITED;
-    ```
-     
-
-**Click to Download**
-
-[lab-resources.zip](https://dgcameron.github.io/python4atp/workshops/python4atp/lab-resources.zip)
+        location ('https://swiftobjectstorage.us-phoenix-1.oraclecloud.com/v1/adwc4pm/weather/*.csv')
+        )  
+        REJECT LIMIT UNLIMITED;
+        ```
+* Click the **Run Statement** button or hit **F9** to create the table 
+    images/100/run-cmd.png    
+    ![run command](images/100/run-cmd.png)
 
 **This completes the Lab!**
 
-**You are ready to proceed to [Lab 100](LabGuide100.md)**
+**You are ready to proceed to [Lab 200](LabGuide200.md)**
