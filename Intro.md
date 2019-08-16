@@ -29,7 +29,7 @@ Here are the tasks that you will perform during the workshop.  Each lab builds o
 * Start SQL Developer by clicking the SQL Developer icon on the toolbar
 ![](images/intro/start-sqldev.png)
 
-* Click the *bikes* connection in the Connections Explorer to connect to Oracle Database 18dc
+* Click the **bikes** connection in the Connections Explorer to connect to Oracle Database 18dc
 * Log in as `bikes / welcome1`
 * Copy and past the SQL code used for the workshop into the newly opened SQL Worksheet.  
 <a href="lab-resources/bikes-hol.sql.html" target="_blank">Download bikes-hol.sql</a>
