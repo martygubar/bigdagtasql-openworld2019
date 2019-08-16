@@ -1,5 +1,5 @@
-# Lab 100: Review Ridership (Database and Object Store)
-  ![](images/050/Title.png)
+# Lab 100: Review Ridership
+  ![](images/100/Title-100.png)
 
 ## Introduction
 
@@ -12,7 +12,7 @@ In Lab 100, you will review CitiBike ridership trends over a several month time 
 
 ## Steps
 
-### **STEP 1:** Log into Zeppelin and open the Big Data SQL Workshop note
+### **STEP 1:** Log into Zeppelin and Open the Big Data SQL Workshop Note
 
 * From your browser, log into Zeppelin using the following URL:
   [http://localhost:8090/#/](http://localhost:8090/#/)
@@ -32,14 +32,14 @@ In Lab 100, you will review CitiBike ridership trends over a several month time 
   The chart shows the daily trends of bike trips in New York City. We'll now add some more context by adding weather data that's available in Oracle Object Store.
 
 
-### **STEP 3:** Create `weather` Table in SQL Developer
+### **STEP 3:** Create WEATHER Table in SQL Developer
 Weather data is captured in a public bucket in Oracle Object Store.  You can view the contents of the weather here:  [https://swiftobjectstorage.us-phoenix-1.oraclecloud.com/v1/adwc4pm/weather/weather-newark-airport.csv](https://swiftobjectstorage.us-phoenix-1.oraclecloud.com/v1/adwc4pm/weather/weather-newark-airport.html).  Create a Big Data SQL table over this file using the `ORACLE_BIGDATA` driver.
 * In the SQL Developer worksheet, scroll to the `CREATE TABLE weather` statement.  A snippet of the statement is listed below.  
     * `ORACLE_BIGDATA` signifies that the data is sourced from the object store.  
     * `com.oracle.bigdata.*` fields define the attributes for the file
     * `LOCATION` identifies the URI for the file(s) in the object store
 
-        ```sql
+```sql
         CREATE TABLE weather
         ( WEATHER_STATION_ID      VARCHAR2(20),
             WEATHER_STATION_NAME    VARCHAR2(100),
@@ -64,14 +64,13 @@ Weather data is captured in a public bucket in Oracle Object Store.  You can vie
         location ('https://swiftobjectstorage.us-phoenix-1.oraclecloud.com/v1/adwc4pm/weather/*.csv')
         )  
         REJECT LIMIT UNLIMITED;
-        ```
+```
 * To execute SQL in SQL Developer, place your cursor anywhere inside the `CREATE TABLE` statement.  Click the **Run Statement** button or hit **F9** to create the table.
-    images/100/run-cmd.png    
     ![run command](images/100/run-cmd.png)
 * Review the weather data with the following query:
-    ```sql
+```sql
     select * from weather;
-    ```
+```
 * How are bikes used in different kinds of weather?  Combine ridership data stored in Oracle Database with the weather data in object store.  Notice that the weather table is treated like any other table in a query.  Applications do not need to be concertned about the data location:
 ```sql
     with rides_by_weather as (
