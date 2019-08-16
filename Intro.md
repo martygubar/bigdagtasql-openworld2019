@@ -25,24 +25,25 @@ Here are the tasks that you will perform during the workshop.  Each lab builds o
 - __Lab 500:  Secure the data__ - Apply advanced Oracle security policies across all the sources
 
 ## Get Started
-### Start SQL Developer
+### Start SQL Developer and Download HOL SQL
 * Start SQL Developer by clicking the SQL Developer icon on the toolbar
 ![](images/intro/start-sqldev.png)
-* Click the *bikes* connection in the Connections Explorer
+
+* Click the *bikes* connection in the Connections Explorer to connect to Oracle Database 18dc
 * Log in as `bikes / welcome1`
 * Copy and past the SQL code used for the workshop into the newly opened SQL Worksheet.  
 <a href="lab-resources/bikes-hol.sql.html" target="_blank">Download bikes-hol.sql</a>
 
-### Download the Latest Workshop Collateral
+  ![sqldev paste code](images/intro/sqldev-addhol.png)
 
 
 
 ## **Navigate to Lab 100**
 
-  - _You can see a list of Lab Guides_ by clicking on the **Menu Icon** in the upper left corner of the browser window.
+  - You can see a list of Lab Guides by clicking on the **Menu Icon** in the upper left corner of the browser window.
 
     ![](images/intro/WorkshopMenu.png)
 
-  ![](images/intro/WorkshopContents.png)
+    ![](images/intro/WorkshopContents.png)
 
 You're now ready to continue with [**Lab 100**](LabGuide100.md).
