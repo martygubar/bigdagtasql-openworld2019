@@ -15,7 +15,7 @@ In Lab 100, you will review CitiBike ridership trends over a several month time 
 ### **STEP 1:** Log into Zeppelin and open the Big Data SQL Workshop note
 
 * From your browser, log into Zeppelin using the following URL:
-  [http://bigdatalite.localdomain:8090/#/](http://bigdatalite.localdomain:8090/#/)
+  [http://localhost:8090/#/](http://localhost:8090/#/)
 
 * Click the **Login** button on the top right and log in using `oracle / welcome1`.
 
@@ -31,6 +31,10 @@ In Lab 100, you will review CitiBike ridership trends over a several month time 
   
   The chart shows the daily trends of bike trips in New York City. We'll now add some more context by adding weather data that's available in Oracle Object Store.
 
+
+### **STEP 3:** Create `weather` Table in SQL Developer
+Weather data is captured in a public bucket in Oracle Object Store.  You can view the contents of the weather here:  [https://swiftobjectstorage.us-phoenix-1.oraclecloud.com/v1/adwc4pm/weather/weather-newark-airport.csv](https://swiftobjectstorage.us-phoenix-1.oraclecloud.com/v1/adwc4pm/weather/weather-newark-airport.html).  Create a Big Data SQL table over this file using the ORACLE_BIGDATA driver.
+*
 
 
 ### **STEP 9:** Download Files Used in this Workshop
