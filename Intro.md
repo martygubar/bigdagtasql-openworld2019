@@ -31,7 +31,7 @@ Here are the tasks that you will perform during the workshop.  Each lab builds o
 * Click the *bikes* connection in the Connections Explorer
 * Log in as `bikes / welcome1`
 * Copy and past the SQL code used for the workshop into the newly opened SQL Worksheet.  
-<a href="lab-resources/bikes-hol.sql" target="_blank">Download bikes-hol.sql</a>
+<a href="lab-resources/bikes-hol.sql.html" target="_blank">Download bikes-hol.sql</a>
 
 ### Download the Latest Workshop Collateral
 
