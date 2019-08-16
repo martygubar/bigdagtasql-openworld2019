@@ -39,7 +39,7 @@ Weather data is captured in a public bucket in Oracle Object Store.  You can vie
     * `com.oracle.bigdata.*` fields define the attributes for the file
     * `LOCATION` identifies the URI for the file(s) in the object store
 
-``` sql
+``` SQL
 CREATE TABLE weather
 ( WEATHER_STATION_ID      VARCHAR2(20),
     WEATHER_STATION_NAME    VARCHAR2(100),
@@ -69,11 +69,11 @@ REJECT LIMIT UNLIMITED;
     ![run command](images/100/run-cmd.png)
 
 * Review the weather data with the following query:
-``` sql
+``` SQL
 select * from weather;
 ```
-* How are bikes used in different kinds of weather?  Combine ridership data stored in Oracle Database with the weather data in object store.  Notice that the weather table is treated like any other table in a query.  Applications do not need to be concertned about the data location:
-``` sql
+* How are bikes used in different kinds of weather?  Combine ridership data stored in Oracle Database with the weather data in object store.  Notice that the weather table is treated like any other table in a query.  Applications do not need to be concerned about the data location:
+``` SQL
 with rides_by_weather as (
 select case 
     when w.temp_avg < 32 then '32 and below'
@@ -101,7 +101,7 @@ group by temp_range, weather
 order by temp_range, weather;
 ```
 ## Summary
-You just created an Oracle Big Data SQL table over data sotred in Oracle Object Store and queried it as you would any other Oracle table.  This allows you to easily blend data across data sources to gain new insights.
+You just created an Oracle Big Data SQL table over data stored in Oracle Object Store and queried it as you would any other Oracle table.  This allows you to easily blend data across data sources to gain new insights.
 
 **This completes the Lab!**
 
