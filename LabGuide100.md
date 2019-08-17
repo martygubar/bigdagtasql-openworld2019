@@ -39,7 +39,7 @@ Weather data is captured in a public bucket in Oracle Object Store.  You can vie
     * `com.oracle.bigdata.*` fields define the attributes for the file
     * `LOCATION` identifies the URI for the file(s) in the object store
 
-``` SQL
+```sql
 CREATE TABLE weather
 ( WEATHER_STATION_ID      VARCHAR2(20),
     WEATHER_STATION_NAME    VARCHAR2(100),
@@ -69,11 +69,11 @@ REJECT LIMIT UNLIMITED;
     ![run command](images/100/run-cmd.png)
 
 * Review the weather data with the following query:
-``` SQL
+```sql
 select * from weather;
 ```
 * How are bikes used in different kinds of weather?  Combine ridership data stored in Oracle Database with the weather data in object store.  Notice that the weather table is treated like any other table in a query.  Applications do not need to be concerned about the data location:
-``` SQL
+```sql
 with rides_by_weather as (
 select case 
     when w.temp_avg < 32 then '32 and below'
