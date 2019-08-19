@@ -9,7 +9,7 @@
                 "number": "0",
                 "filename": "Intro.md",
                 "title": "Workshop Introduction",
-                "description": "",
+                "description": "Background on the workshop and links to content to get started.",
                 "labels": {
                     "version": "Instructor Led"
                 }
@@ -17,8 +17,8 @@
             {
                 "number": "100",
                 "filename": "LabGuide100.md",
-                "title": "Lab 100:  Review Ridership (Database + Object Store)",
-                "description": "",
+                "title": "Lab 100:  Review Ridership",
+                "description": "Use Zeppelin to review ridership info in Oracle Database.  Add Big Data SQL tables that access weather data in Oracle Object Store. ",
                 "labels": {
                     "version": "Instructor Led"
                 }
@@ -26,8 +26,8 @@
             {
                 "number": "200",
                 "filename": "LabGuide200.md",
-                "title": "Lab 200:  Gather Station Details (HDFS)",
-                "description": "",
+                "title": "Lab 200:  Gather Station Details",
+                "description": "Review JSON data in HDFS using Hue.  Create Big Data SQL tables to access data and Oracle SQL to query the JSON data.",
                 "labels": {
                     "version": "Instructor Led"
                 }
@@ -35,8 +35,8 @@
             {
                 "number": "300",
                 "filename": "LabGuide300.md",
-                "title": "Lab 300: Understand Trips and Bike Usage (Hive)",
-                "description": "",
+                "title": "Lab 300: Understand Trips and Bike Usage",
+                "description": "Create a Big Data SQL table over partitioned Hive table.  Run analytic queries combining data from various sources to understand bike usage.",
                 "labels": {
                     "version": "Instructor Led"
                 }
@@ -44,8 +44,8 @@
             {
                 "number": "400",
                 "filename": "LabGuide400.md",
-                "title": "Lab 400: Current Station Status (Kafka)",
-                "description": "",
+                "title": "Lab 400: Current Station Status",
+                "description": "Create a Kafka producer that sends messages about current station status.  Create Big Data SQL table over Kafka stream to understand current bike distribution.",
                 "labels": {
                     "version": "Instructor Led"
                 }
@@ -54,7 +54,7 @@
                 "number": "500",
                 "filename": "LabGuide500.md",
                 "title": "Lab 500: Securing data",
-                "description": "",
+                "description": "Use Oracle Virtual Private Database and Redaction to keep data safe.",
                 "labels": {
                     "version": "Instructor Led"
                 }
