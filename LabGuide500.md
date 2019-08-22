@@ -5,10 +5,12 @@
 ## Introduction
 
 ## Lab 500 Objectives
-
+In this lab you will apply Oracle security policies on the big data sql tables you have created. 
 
 
 ## Steps
+- Define and use a VPD (Virtual Private Database) policy
+- Define and use a Data Redaction policy
 
 ### **STEP 1:** Your Oracle Cloud Trial Account
 - Create a function `BDS_VPD_STATION` to limit to station_id 3186 as starting or ending station

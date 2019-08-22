@@ -4,15 +4,15 @@
 
 ## Introduction
 
-In Lab 400 you will access latest station information, stored in a kafa streams. 
+In Lab 400 you will access latest station information, stored in a kafa streams.
 
 ## Lab 400 Objectives
 
-- open zeppelin and start the kafka stream
-- create an Oracle table `station_status` out of this kafa stream
-- use the JSON_DATAGUIDE function to parse the JSON format and create a `v_station_status`
-- query this newly created view to show how many bikes are available per station 
-- display the results in zeppelin
+- Open zeppelin and start the kafka stream
+- Create an Oracle table `station_status` from this kafa stream
+- Use the JSON_DATAGUIDE function to parse the JSON format and create a `v_station_status` view
+- Query this newly created view to show how many bikes are available per station 
+- Display the results in zeppelin
 
 ## Steps
 
@@ -20,7 +20,7 @@ In Lab 400 you will access latest station information, stored in a kafa streams.
 
 - Connect to the zeppelin with your web browser : http://localhost:8090.
 
-- Click the `login` button in the 
+- Click the `login` button in the upper right side
   ![](images/400/001.png)
 
 - log in using `oracle` / `welcome1` 
@@ -33,8 +33,8 @@ In Lab 400 you will access latest station information, stored in a kafa streams.
 - Go to note #3 and hit the start arrow to start the kafka stream 
     ![](images/400/004.png)
 - Go to note #4 and hit the start arrow to start a kafka consumer
-
-This will show that the kafka streams hold JSON data describing stations status
+    
+    This will show that the kafka streams hold JSON data describing stations status
     ![](images/400/005.png)
 
 ### **STEP 3:** Create a table from the kafka stream
@@ -46,16 +46,15 @@ You will see that at this point the data is still in JSON format
 ![](images/400/007.png)
 
 ### **STEP 4:** Use JSON_DATAGUIDE function to parse JSON format
-
-- analyze the `station_status` table
+- use the JSON_DATAGUIDE function to make sense of the JSON
 ![](images/400/008.png)
 - 
-![](images/400/009.png)
+    ![](images/400/009.png)
 - Use a PL/SQL statement to create the `v_stations_status` view from the `station_status` table
 ![](images/400/010.png)
 - Query this newly created view
 ![](images/400/011.png)
-- Check how many bikes are available per station using this sql statement
+- Check how many bikes are available per station and join with station description table `station` 
 ![](images/400/012.png)
 
 ### **STEP 5:** Review the results in zeppelin
