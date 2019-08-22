@@ -67,7 +67,8 @@ In Lab 300 you will acces all recorded bike trips stored in Hive, create an Orac
 - For problematic bikes, see how they have been used during different types of weather
     ![](images/300/013.png)
 
-
+## Summary
+You have accessed bike trips data store in Hive leveraging the  `ORACLE_HIVE` driver. You have identified the problematic bikes using analytical sql and stored them into a materialized view.
 **This completes the Lab!**
 
 **You are ready to proceed to [Lab 400](LabGuide400.md)**

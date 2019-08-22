@@ -56,7 +56,7 @@ Perform simple ETL by loading the JSON data into an Oracle table called `bikes.s
     ![](images/200/007.png)
 
 ### Summary
-You accessed JSON data stored in HDFS using a Big Data SQL external table - leveraging the `ORACLE_HDFS` driver.  This table will be used frequently as a dimension table - so it was loaded into a new table `bikes.stations`.
+You have accessed JSON data stored in HDFS using a Big Data SQL external table - leveraging the `ORACLE_HDFS` driver.  This table will be used frequently as a dimension table - so it was loaded into a new table `bikes.stations`.
 
 **This completes the Lab!**
 
