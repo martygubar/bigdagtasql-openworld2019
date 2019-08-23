@@ -32,6 +32,7 @@ In Lab 400 you will access latest station information, stored in a kafa streams.
 ### **STEP 2:** Start the kafka stream
 - Go to note #3 and hit the start arrow to start the kafka stream 
     ![](images/400/004.png)
+    
 - Go to note #4 and hit the start arrow to start a kafka consumer
     
     This will show that the kafka streams hold JSON data describing stations status
@@ -48,12 +49,16 @@ You will see that at this point the data is still in JSON format
 ### **STEP 4:** Use JSON_DATAGUIDE function to parse JSON format
 - use the JSON_DATAGUIDE function to make sense of the JSON (flat format)
     ![](images/400/008.png)
+
 - Use the hierarchical format
     ![](images/400/009.png)
+
 - Use a PL/SQL statement to create the `v_stations_status` view from the `station_status` table
     ![](images/400/010.png)
+
 - Query this newly created view
     ![](images/400/011.png)
+
 - Check how many bikes are available per station and join with station description table `station` 
     ![](images/400/012.png)
 
