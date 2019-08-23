@@ -39,28 +39,28 @@ In Lab 400 you will access latest station information, stored in a kafa streams.
 
 ### **STEP 3:** Create a table from the kafka stream
 - From SQL developer, run the following statement to create the `station_status` table
-![](images/400/006.png)
+    ![](images/400/006.png)
 
 - Query this newly created table
 You will see that at this point the data is still in JSON format
-![](images/400/007.png)
+    ![](images/400/007.png)
 
 ### **STEP 4:** Use JSON_DATAGUIDE function to parse JSON format
-- use the JSON_DATAGUIDE function to make sense of the JSON
-![](images/400/008.png)
-- 
+- use the JSON_DATAGUIDE function to make sense of the JSON (flat format)
+    ![](images/400/008.png)
+- Use the hierarchical format
     ![](images/400/009.png)
 - Use a PL/SQL statement to create the `v_stations_status` view from the `station_status` table
-![](images/400/010.png)
+    ![](images/400/010.png)
 - Query this newly created view
-![](images/400/011.png)
+    ![](images/400/011.png)
 - Check how many bikes are available per station and join with station description table `station` 
-![](images/400/012.png)
+    ![](images/400/012.png)
 
 ### **STEP 5:** Review the results in zeppelin
 - Connect to zeppelin and review the results 
-![](images/400/013.png)
-![](images/400/014.png)
+    ![](images/400/013.png)
+    ![](images/400/014.png)
 
 ## Summary
 You have accessed station status stored in Kafka streams, used the JSON_DATAGUIDE feature to parse the JSON format and displayed station bikes availability in zeppelin.
