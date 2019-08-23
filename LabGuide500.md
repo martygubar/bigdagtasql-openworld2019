@@ -11,13 +11,15 @@ In this lab you will apply Oracle security policies on the big data sql tables y
 - Define and use a VPD (Virtual Private Database) policy
 - Define and use a Data Redaction policy
 
-### **STEP 1:** Your Oracle Cloud Trial Account
-- Create a policy `BDS_VPD_STATION` to limit to station_id 3186 as starting or ending station 
+### **STEP 1:** Apply a VPD policy to the `bikes` user
+- Create a policy called `BDS_VPD_STATION` to limit to station_id 3186 as starting or ending station 
 ![](images/500/001.png)
 - Add this policy to the `bikes` user
 ![](images/500/002.png)
 - Query the `trips` table and notice the change
 ![](images/500/003.png)
+
+### **STEP 2:** Apply a data redaction policy to `birth_year` column the `trips` table 
 - Query the `trips` table and notice the `birth_year` column
 ![](images/500/004.png)
 - Run the data redaction statement on the `trips` table

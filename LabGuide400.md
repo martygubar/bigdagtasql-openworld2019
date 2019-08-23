@@ -66,4 +66,4 @@ You will see that at this point the data is still in JSON format
 You have accessed station status stored in Kafka streams, used the JSON_DATAGUIDE feature to parse the JSON format and displayed station bikes availability in zeppelin.
 **This completes the Lab!**
 
-**You are ready to proceed to [Lab 500](LabGuide100.md)**
+**You are ready to proceed to [Lab 500](LabGuide500.md)**
