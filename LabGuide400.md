@@ -10,7 +10,7 @@ In Lab 400 you will access latest station information, stored in a kafa streams.
 
 - Open zeppelin and start the kafka stream
 - Create an Oracle table `station_status` from this kafa stream
-- Use the JSON_DATAGUIDE function to parse the JSON format and create a `v_station_status` view
+- Use the `JSON_DATAGUIDE` function to parse the JSON format and create a `v_station_status` view
 - Query this newly created view to show how many bikes are available per station 
 - Display the results in zeppelin
 
@@ -58,7 +58,7 @@ You will see that at this point the data is still in JSON format
     ![](images/400/012.png)
 
 ### **STEP 5:** Review the results in zeppelin
-- Connect to zeppelin and review the results 
+- Go back to zeppelin and run the chapter 6 
     ![](images/400/013.png)
     ![](images/400/014.png)
 
